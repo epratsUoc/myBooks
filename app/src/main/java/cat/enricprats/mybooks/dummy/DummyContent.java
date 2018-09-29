@@ -41,7 +41,7 @@ public class DummyContent {
     }
 
     private static BookItem createDummyItem(int position) {
-        return new BookItem(position, "Title "+position, "Author "+position, new Date(), "Sescription " + position, "");
+        return new BookItem(position, "Title "+position, "Author "+position, new Date(), "Description " + position+"\nSecond line", "");
     }
 
 //    private static String makeDetails(int position) {
