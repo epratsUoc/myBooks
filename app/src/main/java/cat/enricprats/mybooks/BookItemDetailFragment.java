@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+
 import cat.enricprats.mybooks.cat.enrircprats.mybooks.model.BookItem;
 import cat.enricprats.mybooks.dummy.DummyContent;
 
@@ -24,7 +26,7 @@ public class BookItemDetailFragment extends Fragment {
      * represents.
      */
 //    public static final String ARG_ITEM_ID = "item_id";
-
+    public static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 
 
     /**
@@ -66,7 +68,9 @@ public class BookItemDetailFragment extends Fragment {
         if (mItem != null) {
             ((TextView) rootView.findViewById(R.id.author)).setText(mItem.getAuthor());
             ((TextView) rootView.findViewById(R.id.description)).setText(mItem.getDescription());
-            ((TextView) rootView.findViewById(R.id.description)).setText(mItem.getPublicationDate().toString());
+
+            // SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            ((TextView) rootView.findViewById(R.id.publishDate)).setText(dateFormatter.format(mItem.getPublicationDate()));
         }
 
         return rootView;
