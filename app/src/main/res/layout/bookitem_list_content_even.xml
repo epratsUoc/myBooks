@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="8dp"
-        card_view:cardBackgroundColor="@android:color/darker_gray"
+        card_view:cardBackgroundColor="@color/evenRow"
         card_view:cardCornerRadius="4dp">
 
         <LinearLayout
