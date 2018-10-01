@@ -130,9 +130,9 @@ public class BookItemListActivity extends AppCompatActivity {
         @Override
         public int getItemViewType(int position) {
             if (position%2 == 0) {
-                return ITEM_TYPE_EVEN;
-            } else {
                 return ITEM_TYPE_ODD;
+            } else {
+                return ITEM_TYPE_EVEN;
             }
         }
 
