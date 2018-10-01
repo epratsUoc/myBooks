@@ -72,6 +72,7 @@ public class BookItemListActivity extends AppCompatActivity {
 
     public static final int ITEM_TYPE_ODD = 0;
     public static final int ITEM_TYPE_EVEN = 1;
+    public static final String ARG_ITEM_ID = "item_id";
 
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
@@ -85,7 +86,7 @@ public class BookItemListActivity extends AppCompatActivity {
                 BookItem item = (BookItem) view.getTag();
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putString(BookItemDetailFragment.ARG_ITEM_ID, String.valueOf(item.getId()));
+                    arguments.putInt(BookItemListActivity.ARG_ITEM_ID, item.getId());
                     BookItemDetailFragment fragment = new BookItemDetailFragment();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -94,7 +95,7 @@ public class BookItemListActivity extends AppCompatActivity {
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, BookItemDetailActivity.class);
-                    intent.putExtra(BookItemDetailFragment.ARG_ITEM_ID, item.getId());
+                    intent.putExtra(BookItemListActivity.ARG_ITEM_ID, item.getId());
 
                     context.startActivity(intent);
                 }

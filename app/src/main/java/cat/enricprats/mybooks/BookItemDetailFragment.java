@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+
 import cat.enricprats.mybooks.cat.enrircprats.mybooks.model.BookItem;
 import cat.enricprats.mybooks.dummy.DummyContent;
 
@@ -23,7 +25,9 @@ public class BookItemDetailFragment extends Fragment {
      * The fragment argument representing the item ID that this fragment
      * represents.
      */
-    public static final String ARG_ITEM_ID = "item_id";
+//    public static final String ARG_ITEM_ID = "item_id";
+    public static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+
 
     /**
      * The dummy content this fragment is presenting.
@@ -41,11 +45,11 @@ public class BookItemDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
+        if (getArguments().containsKey(BookItemListActivity.ARG_ITEM_ID)) {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
-            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+            mItem = DummyContent.ITEM_MAP.get(getArguments().getInt(BookItemListActivity.ARG_ITEM_ID));
 
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
@@ -62,7 +66,11 @@ public class BookItemDetailFragment extends Fragment {
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.bookitem_detail)).setText(mItem.getDescription());
+            ((TextView) rootView.findViewById(R.id.author)).setText(mItem.getAuthor());
+            ((TextView) rootView.findViewById(R.id.description)).setText(mItem.getDescription());
+
+            // SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+            ((TextView) rootView.findViewById(R.id.publishDate)).setText(dateFormatter.format(mItem.getPublicationDate()));
         }
 
         return rootView;
