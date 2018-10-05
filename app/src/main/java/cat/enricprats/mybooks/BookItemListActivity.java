@@ -14,6 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+
 import cat.enricprats.mybooks.model.BookItem;
 import cat.enricprats.mybooks.dummy.DummyContent;
 
@@ -35,9 +38,19 @@ public class BookItemListActivity extends AppCompatActivity {
      */
     private boolean mTwoPane;
 
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Initialize Firebase Connection
+        mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+
+
+
         setContentView(R.layout.activity_bookitem_list);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -69,6 +82,8 @@ public class BookItemListActivity extends AppCompatActivity {
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
     }
+
+
 
     public static final int ITEM_TYPE_ODD = 0;
     public static final int ITEM_TYPE_EVEN = 1;
