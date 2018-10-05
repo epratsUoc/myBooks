@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 
-import cat.enricprats.mybooks.cat.enrircprats.mybooks.model.BookItem;
+import cat.enricprats.mybooks.model.BookItem;
 import cat.enricprats.mybooks.dummy.DummyContent;
 
 /**

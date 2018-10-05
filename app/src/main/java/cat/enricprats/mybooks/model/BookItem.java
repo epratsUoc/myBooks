@@ -1,8 +1,8 @@
-package cat.enricprats.mybooks.cat.enricprats.mybooks.model;
+package cat.enricprats.mybooks.model;
 
 import java.util.Date;
 
-public class BootItem {
+public class BookItem {
     private int id;
     private String title;
     private String author;
@@ -10,10 +10,10 @@ public class BootItem {
     private String description;
     private String coverImageUrl;
 
-    public BootItem() {
+    public BookItem() {
     }
 
-    public BootItem(int id, String title, String author, Date publicationDate, String description, String coverImageUrl) {
+    public BookItem(int id, String title, String author, Date publicationDate, String description, String coverImageUrl) {
         this.id = id;
         this.title = title;
         this.author = author;

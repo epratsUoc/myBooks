@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cat.enricprats.mybooks.cat.enrircprats.mybooks.model.BookItem;
+import cat.enricprats.mybooks.model.BookItem;
 
 /**
  * Helper class for providing sample content for user interfaces created by
