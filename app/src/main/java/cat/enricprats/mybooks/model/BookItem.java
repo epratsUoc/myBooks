@@ -1,10 +1,11 @@
 package cat.enricprats.mybooks.model;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class BookItem {
+public class BookItem implements Serializable {
     private int id;
     private String title;
     private String author;

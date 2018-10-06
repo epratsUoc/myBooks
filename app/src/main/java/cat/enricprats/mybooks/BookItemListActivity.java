@@ -177,7 +177,7 @@ public class BookItemListActivity extends AppCompatActivity {
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, BookItemDetailActivity.class);
-                    intent.putExtra(BookItemListActivity.ARG_ITEM_ID, item.getId());
+                    intent.putExtra(BookItemListActivity.ARG_ITEM_ID, item);
 
                     context.startActivity(intent);
                 }

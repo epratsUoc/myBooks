@@ -53,9 +53,11 @@ public class BookItemDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putInt(BookItemListActivity.ARG_ITEM_ID,
+
+            arguments.putSerializable(BookItemListActivity.ARG_ITEM_ID,
+                    getIntent().getSerializableExtra(BookItemListActivity.ARG_ITEM_ID));
 //                    getIntent().getStringExtra(BookItemListActivity.ARG_ITEM_ID));
-                getIntent().getIntExtra(BookItemListActivity.ARG_ITEM_ID, -1));
+//                getIntent().getIntExtra(BookItemListActivity.ARG_ITEM_ID, -1));
             BookItemDetailFragment fragment = new BookItemDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
