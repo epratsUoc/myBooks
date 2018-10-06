@@ -9,13 +9,21 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+//import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.database.FirebaseDatabase;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.FirebaseUser;
 
 import cat.enricprats.mybooks.model.BookItem;
 import cat.enricprats.mybooks.dummy.DummyContent;
@@ -32,6 +40,7 @@ import java.util.List;
  */
 public class BookItemListActivity extends AppCompatActivity {
 
+    private static String TAG = "#####";
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -39,19 +48,19 @@ public class BookItemListActivity extends AppCompatActivity {
     private boolean mTwoPane;
 
     private FirebaseAuth mAuth;
-    private FirebaseDatabase database;
+//    private FirebaseDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_bookitem_list);
+
         // Initialize Firebase Connection
         mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
+//        database = FirebaseDatabase.getInstance();
 
 
-
-        setContentView(R.layout.activity_bookitem_list);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -73,7 +82,40 @@ public class BookItemListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser!=null) {
+            mAuth.signInWithEmailAndPassword("test1@enricprats.cat", "patata")
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d(TAG, "createUserWithEmail:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                updateUI(); //updateUI(user);
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                Toast.makeText(BookItemListActivity.this, "Authentication failed.",
+                                        Toast.LENGTH_SHORT).show();
+//                            updateUI(); //updateUI(null);
+                            }
+
+                            // ...
+                        }
+                    });
+        }
+        else {
+            updateUI();
+        }
+    }
+
+    private void updateUI() {
         View recyclerView = findViewById(R.id.bookitem_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
