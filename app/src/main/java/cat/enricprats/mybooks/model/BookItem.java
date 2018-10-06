@@ -8,18 +8,18 @@ public class BookItem {
     private String author;
     private Date publicationDate;
     private String description;
-    private String coverImageUrl;
+    private String urlImage;
 
     public BookItem() {
     }
 
-    public BookItem(int id, String title, String author, Date publicationDate, String description, String coverImageUrl) {
+    public BookItem(int id, String title, String author, Date publicationDate, String description, String urlImage) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.publicationDate = publicationDate;
         this.description = description;
-        this.coverImageUrl = coverImageUrl;
+        this.urlImage = urlImage;
     }
 
     public int getId() {
@@ -62,11 +62,11 @@ public class BookItem {
         this.description = description;
     }
 
-    public String getCoverImageUrl() {
-        return coverImageUrl;
+    public String getUrlImage() {
+        return urlImage;
     }
 
-    public void setCoverImageUrl(String coverImageUrl) {
-        this.coverImageUrl = coverImageUrl;
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
     }
 }
