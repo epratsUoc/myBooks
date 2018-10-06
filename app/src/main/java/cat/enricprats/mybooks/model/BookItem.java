@@ -1,25 +1,27 @@
 package cat.enricprats.mybooks.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class BookItem {
     private int id;
     private String title;
     private String author;
-    private Date publicationDate;
+    private String publication_date;
     private String description;
-    private String coverImageUrl;
+    private String url_image;
 
     public BookItem() {
     }
 
-    public BookItem(int id, String title, String author, Date publicationDate, String description, String coverImageUrl) {
+    public BookItem(int id, String title, String author, String publication_date, String description, String url_image) {
         this.id = id;
         this.title = title;
         this.author = author;
-        this.publicationDate = publicationDate;
+        this.publication_date = publication_date;
         this.description = description;
-        this.coverImageUrl = coverImageUrl;
+        this.url_image = url_image;
     }
 
     public int getId() {
@@ -46,12 +48,12 @@ public class BookItem {
         this.author = author;
     }
 
-    public Date getPublicationDate() {
-        return publicationDate;
+    public String getPublication_date() {
+        return publication_date;
     }
 
-    public void setPublicationDate(Date publicationDate) {
-        this.publicationDate = publicationDate;
+    public void setPublication_date(String publication_date) {
+        this.publication_date = publication_date;
     }
 
     public String getDescription() {
@@ -62,11 +64,11 @@ public class BookItem {
         this.description = description;
     }
 
-    public String getCoverImageUrl() {
-        return coverImageUrl;
+    public String getUrl_image() {
+        return url_image;
     }
 
-    public void setCoverImageUrl(String coverImageUrl) {
-        this.coverImageUrl = coverImageUrl;
+    public void setUrl_image(String url_image) {
+        this.url_image = url_image;
     }
 }

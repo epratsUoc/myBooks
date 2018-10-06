@@ -69,8 +69,8 @@ public class BookItemDetailFragment extends Fragment {
             ((TextView) rootView.findViewById(R.id.author)).setText(mItem.getAuthor());
             ((TextView) rootView.findViewById(R.id.description)).setText(mItem.getDescription());
 
-            // SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-            ((TextView) rootView.findViewById(R.id.publishDate)).setText(dateFormatter.format(mItem.getPublicationDate()));
+//            ((TextView) rootView.findViewById(R.id.publishDate)).setText(dateFormatter.format(mItem.getPublication_date()));
+            ((TextView) rootView.findViewById(R.id.publishDate)).setText(mItem.getPublication_date());
         }
 
         return rootView;
