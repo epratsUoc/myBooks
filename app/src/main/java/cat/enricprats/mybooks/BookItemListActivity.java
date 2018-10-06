@@ -24,6 +24,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import cat.enricprats.mybooks.model.BookItem;
 import cat.enricprats.mybooks.dummy.DummyContent;
@@ -48,7 +53,7 @@ public class BookItemListActivity extends AppCompatActivity {
     private boolean mTwoPane;
 
     private FirebaseAuth mAuth;
-//    private FirebaseDatabase database;
+    private FirebaseDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +63,7 @@ public class BookItemListActivity extends AppCompatActivity {
 
         // Initialize Firebase Connection
         mAuth = FirebaseAuth.getInstance();
-//        database = FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();
 
 
 
@@ -121,8 +126,26 @@ public class BookItemListActivity extends AppCompatActivity {
         setupRecyclerView((RecyclerView) recyclerView);
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
+    private void setupRecyclerView(final @NonNull RecyclerView recyclerView) {
+        DatabaseReference myRef = database.getReference("books");
+        final BookItemListActivity _this = this;
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+//                String value = dataSnapshot.getValue(String.class);
+//                Log.d(TAG, "Value is: " + value);
+                recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(_this, DummyContent.ITEMS, mTwoPane));
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
     }
 
 
