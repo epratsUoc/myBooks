@@ -138,7 +138,7 @@ public class BookItemListActivity extends AppCompatActivity {
                 GenericTypeIndicator<List<BookItem>> type = new GenericTypeIndicator<List<BookItem>>(){};
                 List<BookItem> books = dataSnapshot.getValue(type);
 //                Log.d(TAG, "Value is: " + value);
-                recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(_this, DummyContent.ITEMS, mTwoPane));
+                recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(_this, books, mTwoPane));
 
             }
 
