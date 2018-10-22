@@ -62,11 +62,18 @@ public class BookItemListActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_bookitem_list);
 
+
+
+
+        BookItem book = new BookItem("alpargata", "enric hernández", "10/01/2018", "el nom ja ho diu tot", "");
+        book.save();
+
+
+
+
         // Initialize Firebase Connection
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -168,7 +175,7 @@ public class BookItemListActivity extends AppCompatActivity {
                 BookItem item = (BookItem) view.getTag();
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putInt(BookItemListActivity.ARG_ITEM_ID, item.getId());
+                    arguments.putLong(BookItemListActivity.ARG_ITEM_ID, item.getId());
                     BookItemDetailFragment fragment = new BookItemDetailFragment();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -178,7 +185,6 @@ public class BookItemListActivity extends AppCompatActivity {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, BookItemDetailActivity.class);
                     intent.putExtra(BookItemListActivity.ARG_ITEM_ID, item);
-
                     context.startActivity(intent);
                 }
             }

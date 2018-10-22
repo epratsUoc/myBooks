@@ -24,7 +24,7 @@ public class DummyContent {
     /**
      * A map of sample (dummy) items, by ID.
      */
-    public static final Map<Integer, BookItem> ITEM_MAP = new HashMap<Integer, BookItem>();
+    public static final Map<Long, BookItem> ITEM_MAP = new HashMap<Long, BookItem>();
 
     private static final int COUNT = 25;
 
@@ -41,7 +41,8 @@ public class DummyContent {
     }
 
     private static BookItem createDummyItem(int position) {
-        return new BookItem(position, "Title "+position, "Author "+position, "11/11/2005", "Description " + position+"\nSecond line", "");
+//        return new BookItem(position, "Title "+position, "Author "+position, "11/11/2005", "Description " + position+"\nSecond line", "");
+        return new BookItem("Title "+position, "Author "+position, "11/11/2005", "Description " + position+"\nSecond line", "");
     }
 
 //    private static String makeDetails(int position) {
