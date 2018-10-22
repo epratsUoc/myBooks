@@ -161,8 +161,14 @@ public class BookItemListActivity extends AppCompatActivity {
                 GenericTypeIndicator<List<BookItem>> type = new GenericTypeIndicator<List<BookItem>>(){};
                 List<BookItem> books = dataSnapshot.getValue(type);
                 BookContent.rebuildList(books);
-                adapter = new SimpleItemRecyclerViewAdapter(_this, BookContent.getBooks(), mTwoPane);
-                recyclerView.setAdapter(adapter);
+                if (adapter == null) {
+                    adapter = new SimpleItemRecyclerViewAdapter(_this, BookContent.getBooks(), mTwoPane);
+                    recyclerView.setAdapter(adapter);
+                }
+                else {
+                    adapter.clear();
+                    adapter.setItems(BookContent.getBooks());
+                }
 
             }
 
@@ -171,8 +177,10 @@ public class BookItemListActivity extends AppCompatActivity {
                 // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException());
                 // We launch the view with the values of our database
-                adapter = new SimpleItemRecyclerViewAdapter(_this, BookContent.getBooks(), mTwoPane);
-                recyclerView.setAdapter(adapter);
+                if (adapter == null) {
+                    adapter = new SimpleItemRecyclerViewAdapter(_this, BookContent.getBooks(), mTwoPane);
+                    recyclerView.setAdapter(adapter);
+                }
             }
         });
     }
