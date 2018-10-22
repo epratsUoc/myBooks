@@ -62,15 +62,6 @@ public class BookItemListActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_bookitem_list);
 
-
-
-
-        BookItem book = new BookItem("alpargata", "enric hernández", "10/01/2018", "el nom ja ho diu tot", "");
-        book.save();
-
-
-
-
         // Initialize Firebase Connection
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -144,8 +135,8 @@ public class BookItemListActivity extends AppCompatActivity {
                 // whenever data at this location is updated.
                 GenericTypeIndicator<List<BookItem>> type = new GenericTypeIndicator<List<BookItem>>(){};
                 List<BookItem> books = dataSnapshot.getValue(type);
-//                Log.d(TAG, "Value is: " + value);
-                recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(_this, books, mTwoPane));
+                BookContent.rebuildList(books);
+                recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(_this, BookContent.getBooks(), mTwoPane));
 
             }
 
