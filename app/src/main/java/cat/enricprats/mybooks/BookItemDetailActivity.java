@@ -54,8 +54,8 @@ public class BookItemDetailActivity extends AppCompatActivity {
             // using a fragment transaction.
             Bundle arguments = new Bundle();
 
-            arguments.putSerializable(BookItemListActivity.ARG_ITEM_ID,
-                    getIntent().getSerializableExtra(BookItemListActivity.ARG_ITEM_ID));
+            arguments.putLong(BookItemListActivity.ARG_ITEM_ID,
+                    getIntent().getLongExtra(BookItemListActivity.ARG_ITEM_ID, 0));
 //                    getIntent().getStringExtra(BookItemListActivity.ARG_ITEM_ID));
 //                getIntent().getIntExtra(BookItemListActivity.ARG_ITEM_ID, -1));
             BookItemDetailFragment fragment = new BookItemDetailFragment();
