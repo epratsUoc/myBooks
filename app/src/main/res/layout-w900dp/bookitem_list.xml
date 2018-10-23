@@ -17,19 +17,23 @@
     master/detail flow.
     
     -->
-
-    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/bookitem_list"
-        android:name="cat.enricprats.mybooks.BookItemListFragment"
-        android:layout_width="@dimen/item_width"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        app:layoutManager="LinearLayoutManager"
-        tools:context="cat.enricprats.mybooks.BookItemListActivity"
-        tools:listitem="@layout/bookitem_list_content" />
-
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipeContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/bookitem_list"
+            android:name="cat.enricprats.mybooks.BookItemListFragment"
+            android:layout_width="@dimen/item_width"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            app:layoutManager="LinearLayoutManager"
+            tools:context="cat.enricprats.mybooks.BookItemListActivity"
+            tools:listitem="@layout/bookitem_list_content" />
+    </android.support.v4.widget.SwipeRefreshLayout>
     <FrameLayout
         android:id="@+id/bookitem_detail_container"
         android:layout_width="0dp"

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -56,20 +57,15 @@ public class BookItemListActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
 
+    private SwipeRefreshLayout swipeContainer;
+    private View recyclerView;
+    private SimpleItemRecyclerViewAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_bookitem_list);
-
-
-
-
-        BookItem book = new BookItem("alpargata", "enric hernández", "10/01/2018", "el nom ja ho diu tot", "");
-        book.save();
-
-
-
 
         // Initialize Firebase Connection
         mAuth = FirebaseAuth.getInstance();
@@ -95,6 +91,26 @@ public class BookItemListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+
+        // Prepare the swipe to refresh widget
+
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+// Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // ============ INICIO CODIGO A COMPLETAR ===============
+                Log.w(TAG, "refresh asked");
+                adapter.clear();
+                // ...the data has come back, add new items to your adapter...
+                adapter.setItems(BookContent.getBooks());
+                // Now we call setRefreshing(false) to signal refresh has finished
+                swipeContainer.setRefreshing(false);
+
+                // ============ FIN CODIGO A COMPLETAR ===============
+            }
+        });
+
     }
 
     @Override
@@ -129,7 +145,7 @@ public class BookItemListActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
-        View recyclerView = findViewById(R.id.bookitem_list);
+        recyclerView = findViewById(R.id.bookitem_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
     }
@@ -144,8 +160,15 @@ public class BookItemListActivity extends AppCompatActivity {
                 // whenever data at this location is updated.
                 GenericTypeIndicator<List<BookItem>> type = new GenericTypeIndicator<List<BookItem>>(){};
                 List<BookItem> books = dataSnapshot.getValue(type);
-//                Log.d(TAG, "Value is: " + value);
-                recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(_this, books, mTwoPane));
+                BookContent.rebuildList(books);
+                if (adapter == null) {
+                    adapter = new SimpleItemRecyclerViewAdapter(_this, BookContent.getBooks(), mTwoPane);
+                    recyclerView.setAdapter(adapter);
+                }
+                else {
+                    adapter.clear();
+                    adapter.setItems(BookContent.getBooks());
+                }
 
             }
 
@@ -153,6 +176,11 @@ public class BookItemListActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException());
+                // We launch the view with the values of our database
+                if (adapter == null) {
+                    adapter = new SimpleItemRecyclerViewAdapter(_this, BookContent.getBooks(), mTwoPane);
+                    recyclerView.setAdapter(adapter);
+                }
             }
         });
     }
@@ -167,7 +195,7 @@ public class BookItemListActivity extends AppCompatActivity {
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final BookItemListActivity mParentActivity;
-        private final List<BookItem> mValues;
+        private List<BookItem> mValues;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
@@ -227,6 +255,16 @@ public class BookItemListActivity extends AppCompatActivity {
         @Override
         public int getItemCount() {
             return mValues.size();
+        }
+
+        public void clear() {
+            mValues.clear();
+            notifyDataSetChanged();
+        }
+
+        public void setItems(List<BookItem> booksList) {
+            this.mValues = booksList;
+            notifyDataSetChanged();
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
