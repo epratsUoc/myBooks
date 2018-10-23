@@ -29,9 +29,6 @@ public class BookItemDetailFragment extends Fragment {
     public static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 
 
-    /**
-     * The dummy content this fragment is presenting.
-     */
     private BookItem mItem;
 
     /**
@@ -46,11 +43,9 @@ public class BookItemDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey(BookItemListActivity.ARG_ITEM_ID)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
-//            mItem = DummyContent.ITEM_MAP.get(getArguments().getInt(BookItemListActivity.ARG_ITEM_ID));
-            mItem = (BookItem) getArguments().getSerializable(BookItemListActivity.ARG_ITEM_ID);
+
+            Long key = getArguments().getLong(BookItemListActivity.ARG_ITEM_ID);
+            mItem = BookItem.findById(BookItem.class, key);
 
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
