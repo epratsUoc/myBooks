@@ -1,12 +1,11 @@
 package cat.enricprats.mybooks.model;
 
-import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.orm.SugarRecord;
 
-public class BookItem implements Serializable {
-    private int id;
+import java.io.Serializable;
+
+public class BookItem extends SugarRecord implements Serializable {
+//    private long id;
     private String title;
     private String author;
     private String publication_date;
@@ -16,8 +15,9 @@ public class BookItem implements Serializable {
     public BookItem() {
     }
 
-    public BookItem(int id, String title, String author, String publication_date, String description, String url_image) {
-        this.id = id;
+//    public BookItem(long id, String title, String author, String publication_date, String description, String url_image) {
+    public BookItem(String title, String author, String publication_date, String description, String url_image) {
+//        this.id = id;
         this.title = title;
         this.author = author;
         this.publication_date = publication_date;
@@ -25,13 +25,13 @@ public class BookItem implements Serializable {
         this.url_image = url_image;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(long id) {
+//        this.id = id;
+//    }
 
     public String getTitle() {
         return title;
