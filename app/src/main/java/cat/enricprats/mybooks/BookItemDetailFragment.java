@@ -1,18 +1,18 @@
 package cat.enricprats.mybooks;
 
 import android.app.Activity;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 
 import cat.enricprats.mybooks.model.BookItem;
-import cat.enricprats.mybooks.dummy.DummyContent;
 
 /**
  * A fragment representing a single BookItem detail screen.
@@ -64,9 +64,10 @@ public class BookItemDetailFragment extends Fragment {
         if (mItem != null) {
             ((TextView) rootView.findViewById(R.id.author)).setText(mItem.getAuthor());
             ((TextView) rootView.findViewById(R.id.description)).setText(mItem.getDescription());
-
-//            ((TextView) rootView.findViewById(R.id.publishDate)).setText(dateFormatter.format(mItem.getPublication_date()));
             ((TextView) rootView.findViewById(R.id.publishDate)).setText(mItem.getPublication_date());
+
+            ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
+            GlideApp.with(this).load(mItem.getUrl_image()).into(imageView);
         }
 
         return rootView;
