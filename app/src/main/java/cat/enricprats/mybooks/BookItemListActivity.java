@@ -4,21 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-//import com.google.firebase.auth.FirebaseAuth;
-//import com.google.firebase.database.FirebaseDatabase;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -32,10 +29,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
-import cat.enricprats.mybooks.model.BookItem;
-import cat.enricprats.mybooks.dummy.DummyContent;
-
 import java.util.List;
+
+import cat.enricprats.mybooks.model.BookItem;
+
+//import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * An activity representing a list of BookList. This activity
@@ -153,6 +152,12 @@ public class BookItemListActivity extends AppCompatActivity {
     private void setupRecyclerView(final @NonNull RecyclerView recyclerView) {
         DatabaseReference myRef = database.getReference("books");
         final BookItemListActivity _this = this;
+
+        // We load the books in case we don't have Internet connection
+        adapter = new SimpleItemRecyclerViewAdapter(_this, BookContent.getBooks(), mTwoPane);
+        recyclerView.setAdapter(adapter);
+
+        // We set the listener to refresh with new books when there is connection active
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
