@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -45,6 +46,7 @@ import cat.enricprats.mybooks.model.BookItem;
  * item details side-by-side using two vertical panes.
  */
 public class BookItemListActivity extends AppCompatActivity {
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     private static String TAG = "#####";
     /**
@@ -63,6 +65,9 @@ public class BookItemListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         setContentView(R.layout.activity_bookitem_list);
 
