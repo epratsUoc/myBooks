@@ -23,4 +23,8 @@ public class BookContent {
             }
         }
     }
+
+    public static void deleteBook(long id) {
+        BookItem.delete(BookItem.findById(BookItem.class, id));
+    }
 }

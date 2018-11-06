@@ -224,9 +224,11 @@ public class BookItemListActivity extends AppCompatActivity {
             String action = intent.getAction();
             switch (action){
                 case Intent.ACTION_DELETE:
-//                    deleteBook(0);
+                    BookContent.deleteBook(-1);
                     break;
                 case Intent.ACTION_GET_CONTENT:
+                    getBaseContext();
+                    adapter.showDetail(getBaseContext(), 2);
 //                    updateNotification();
                     break;
             }
@@ -247,22 +249,24 @@ public class BookItemListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 BookItem item = (BookItem) view.getTag();
-                if (mTwoPane) {
-                    Bundle arguments = new Bundle();
-                    arguments.putLong(BookItemListActivity.ARG_ITEM_ID, item.getId());
-                    BookItemDetailFragment fragment = new BookItemDetailFragment();
-                    fragment.setArguments(arguments);
-                    mParentActivity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.bookitem_detail_container, fragment)
-                            .commit();
-                } else {
-                    Context context = view.getContext();
-                    Intent intent = new Intent(context, BookItemDetailActivity.class);
-                    intent.putExtra(BookItemListActivity.ARG_ITEM_ID, item.getId());
-                    context.startActivity(intent);
-                }
+                showDetail(view.getContext(), item.getId());
             }
         };
+        private void showDetail(Context context, long bookId) {
+            if (mTwoPane) {
+                Bundle arguments = new Bundle();
+                arguments.putLong(BookItemListActivity.ARG_ITEM_ID, bookId);
+                BookItemDetailFragment fragment = new BookItemDetailFragment();
+                fragment.setArguments(arguments);
+                mParentActivity.getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.bookitem_detail_container, fragment)
+                        .commit();
+            } else {
+                Intent intent = new Intent(context, BookItemDetailActivity.class);
+                intent.putExtra(BookItemListActivity.ARG_ITEM_ID, bookId);
+                context.startActivity(intent);
+            }
+        }
 
         SimpleItemRecyclerViewAdapter(BookItemListActivity parent,
                                       List<BookItem> items,
