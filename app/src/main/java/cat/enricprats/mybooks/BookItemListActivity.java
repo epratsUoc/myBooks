@@ -1,7 +1,9 @@
 package cat.enricprats.mybooks;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -62,12 +64,21 @@ public class BookItemListActivity extends AppCompatActivity {
     private View recyclerView;
     private SimpleItemRecyclerViewAdapter adapter;
 
+    private NotificationReceiver mReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        // Register the class to handle notification actions
+        mReceiver= new NotificationReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_DELETE);
+        intentFilter.addAction(Intent.ACTION_GET_CONTENT);
+        registerReceiver(mReceiver, intentFilter);
 
         setContentView(R.layout.activity_bookitem_list);
 
@@ -196,6 +207,33 @@ public class BookItemListActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(mReceiver);
+        super.onDestroy();
+    }
+
+    public class NotificationReceiver extends BroadcastReceiver {
+
+        public NotificationReceiver() {
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.w(TAG, "@@@@Receiving action:"+intent.getAction());
+            String action = intent.getAction();
+            switch (action){
+                case Intent.ACTION_DELETE:
+//                    deleteBook(0);
+                    break;
+                case Intent.ACTION_GET_CONTENT:
+//                    updateNotification();
+                    break;
+            }
+            intent.getI
+
+        }
+    }
 
     public static final int ITEM_TYPE_ODD = 0;
     public static final int ITEM_TYPE_EVEN = 1;

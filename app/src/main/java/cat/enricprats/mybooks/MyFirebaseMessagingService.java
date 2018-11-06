@@ -33,24 +33,31 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     /**
      * Crea y muestra una notificación al recibir un mensaje de Firebase
      *
-     * @param messageBody Texto a mostrar en la notificación
+     * @param notification notificación recibida de firebase
      */
     private void sendNotification(RemoteMessage.Notification notification) {
-        Intent intent = new Intent(this, BookItemListActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+
+        PendingIntent deleteIntent = PendingIntent.getBroadcast(this, (int) System.currentTimeMillis(), new Intent(Intent.ACTION_DELETE), 0);
+        PendingIntent detailIntent = PendingIntent.getBroadcast(this, (int) System.currentTimeMillis(), new Intent(Intent.ACTION_GET_CONTENT), 0);
+
+//        Intent intent = new Intent(this, BookItemListActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+//                PendingIntent.FLAG_ONE_SHOT);
 
         String channelId = getString(R.string.default_notification_channel_id);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(android.R.drawable.ic_notification_overlay)
+                        .setSmallIcon(android.R.drawable.alert_light_frame)
                         .setContentTitle(notification.getTitle())
                         .setContentText(notification.getBody())
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
-                        .setContentIntent(pendingIntent);
+//                        .setContentIntent(pendingIntent);
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText("Estos son los detalles expandidos de la notificación anterior, aquí se puede escribir más texto para que lo lea el usuario."))
+                        .addAction(new NotificationCompat.Action(android.R.drawable.ic_menu_delete, "Borrar", deleteIntent))
+                        .addAction(new NotificationCompat.Action(android.R.drawable.ic_menu_info_details, "Detalle", detailIntent));
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
