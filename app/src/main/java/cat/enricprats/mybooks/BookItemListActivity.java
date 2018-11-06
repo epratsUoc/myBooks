@@ -230,8 +230,6 @@ public class BookItemListActivity extends AppCompatActivity {
 //                    updateNotification();
                     break;
             }
-            intent.getI
-
         }
     }
 
