@@ -227,6 +227,10 @@ public class BookItemListActivity extends AppCompatActivity {
             switch (action){
                 case Intent.ACTION_DELETE:
                     BookContent.deleteBook(bookId);
+                    Log.w(TAG, "refresh asked");
+                    adapter.clear();
+                    // ...the data has come back, add new items to your adapter...
+                    adapter.setItems(BookContent.getBooks());
                     break;
                 case Intent.ACTION_GET_CONTENT:
                     getBaseContext();
