@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -66,11 +67,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(android.R.drawable.alert_light_frame)
+//                        .setSmallIcon(android.R.drawable.alert_light_frame)
+                        .setSmallIcon(R.drawable.ic_book_app)
                         .setContentTitle(notification.getTitle())
                         .setContentText(notification.getBody())
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
+                        .setVibrate(new long[] { 1000, 1000, 1000 })
+                        .setLights(Color.BLUE, 1000, 300)
 //                        .setContentIntent(pendingIntent);
 //                        .setStyle(new NotificationCompat.BigTextStyle().bigText("Estos son los detalles expandidos de la notificación anterior, aquí se puede escribir más texto para que lo lea el usuario."))
                         .addAction(new NotificationCompat.Action(android.R.drawable.ic_menu_delete, "Borrar", deletePendingIntent))
