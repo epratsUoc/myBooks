@@ -27,18 +27,35 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.w(TAG, "@@@@@Receiving message.");
         // Mostrar una notificación al recibir un mensaje de Firebase
-        sendNotification(remoteMessage.getNotification());
+        sendNotification(remoteMessage);
     }
 
     /**
      * Crea y muestra una notificación al recibir un mensaje de Firebase
      *
-     * @param notification notificación recibida de firebase
+     * @param remoteMessage message recibido de firebase
      */
-    private void sendNotification(RemoteMessage.Notification notification) {
+    private void sendNotification(RemoteMessage remoteMessage) {
 
-        PendingIntent deleteIntent = PendingIntent.getBroadcast(this, (int) System.currentTimeMillis(), new Intent(Intent.ACTION_DELETE), 0);
-        PendingIntent detailIntent = PendingIntent.getBroadcast(this, (int) System.currentTimeMillis(), new Intent(Intent.ACTION_GET_CONTENT), 0);
+        // Get the data from the message
+        long bookId = Long.parseLong(remoteMessage.getData().get("book_item"));
+
+        // Get the notification inside the message
+        RemoteMessage.Notification notification = remoteMessage.getNotification();
+
+        // Generate a random id for the notification
+        int notificationId = (int)System.currentTimeMillis();
+
+        // Create intents for the notification actions
+        Intent deleteIntent = new Intent(Intent.ACTION_DELETE);
+        deleteIntent.putExtra("bookId", bookId);
+        deleteIntent.putExtra("notificationId", notificationId);
+        PendingIntent deletePendingIntent = PendingIntent.getBroadcast(this, (int) System.currentTimeMillis(), deleteIntent, 0);
+
+        Intent detailIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        detailIntent.putExtra("bookId", bookId);
+        detailIntent.putExtra("notificationId", notificationId);
+        PendingIntent detailPendingIntent = PendingIntent.getBroadcast(this, (int) System.currentTimeMillis(), detailIntent, 0);
 
 //        Intent intent = new Intent(this, BookItemListActivity.class);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -55,9 +72,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
 //                        .setContentIntent(pendingIntent);
-                        .setStyle(new NotificationCompat.BigTextStyle().bigText("Estos son los detalles expandidos de la notificación anterior, aquí se puede escribir más texto para que lo lea el usuario."))
-                        .addAction(new NotificationCompat.Action(android.R.drawable.ic_menu_delete, "Borrar", deleteIntent))
-                        .addAction(new NotificationCompat.Action(android.R.drawable.ic_menu_info_details, "Detalle", detailIntent));
+//                        .setStyle(new NotificationCompat.BigTextStyle().bigText("Estos son los detalles expandidos de la notificación anterior, aquí se puede escribir más texto para que lo lea el usuario."))
+                        .addAction(new NotificationCompat.Action(android.R.drawable.ic_menu_delete, "Borrar", deletePendingIntent))
+                        .addAction(new NotificationCompat.Action(android.R.drawable.ic_menu_info_details, "Detalle", detailPendingIntent));
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -70,6 +87,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationManager.createNotificationChannel(channel);
         }
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(notificationId /* ID of notification */, notificationBuilder.build());
     }
 }

@@ -1,5 +1,6 @@
 package cat.enricprats.mybooks;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -222,16 +223,28 @@ public class BookItemListActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Log.w(TAG, "@@@@Receiving action:"+intent.getAction());
             String action = intent.getAction();
+            long bookId = intent.getLongExtra("bookId", -1);
             switch (action){
                 case Intent.ACTION_DELETE:
-                    BookContent.deleteBook(-1);
+                    BookContent.deleteBook(bookId);
+                    Log.w(TAG, "refresh asked");
+                    adapter.clear();
+                    // ...the data has come back, add new items to your adapter...
+                    adapter.setItems(BookContent.getBooks());
                     break;
                 case Intent.ACTION_GET_CONTENT:
                     getBaseContext();
-                    adapter.showDetail(getBaseContext(), 2);
+                    adapter.showDetail(getBaseContext(), bookId);
 //                    updateNotification();
                     break;
             }
+
+            // Clear the notification
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            int notificationId = intent.getIntExtra("notificationId", -1);
+            notificationManager.cancel(notificationId);
+
         }
     }
 
