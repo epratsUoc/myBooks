@@ -222,13 +222,14 @@ public class BookItemListActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Log.w(TAG, "@@@@Receiving action:"+intent.getAction());
             String action = intent.getAction();
+            long bookId = intent.getLongExtra("bookId", -1);
             switch (action){
                 case Intent.ACTION_DELETE:
-                    BookContent.deleteBook(-1);
+                    BookContent.deleteBook(bookId);
                     break;
                 case Intent.ACTION_GET_CONTENT:
                     getBaseContext();
-                    adapter.showDetail(getBaseContext(), 2);
+                    adapter.showDetail(getBaseContext(), bookId);
 //                    updateNotification();
                     break;
             }
