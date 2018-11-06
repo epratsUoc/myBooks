@@ -18,6 +18,11 @@
         <meta-data android:name="VERSION" android:value="1" />
         <meta-data android:name="QUERY_LOG" android:value="true" />
         <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="cat.enricprats.mybooks.model" />
+        <!-- [START fcm_default_channel] -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+        <!-- [END fcm_default_channel] -->
         <activity
             android:name=".BookItemListActivity"
             android:label="@string/app_name"
