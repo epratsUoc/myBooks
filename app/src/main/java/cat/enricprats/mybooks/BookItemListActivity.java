@@ -1,5 +1,6 @@
 package cat.enricprats.mybooks;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -233,6 +234,13 @@ public class BookItemListActivity extends AppCompatActivity {
 //                    updateNotification();
                     break;
             }
+
+            // Clear the notification
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            int notificationId = intent.getIntExtra("notificationId", -1);
+            notificationManager.cancel(notificationId);
+
         }
     }
 
