@@ -1,7 +1,9 @@
 package cat.enricprats.mybooks;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -62,12 +64,21 @@ public class BookItemListActivity extends AppCompatActivity {
     private View recyclerView;
     private SimpleItemRecyclerViewAdapter adapter;
 
+    private NotificationReceiver mReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        // Register the class to handle notification actions
+        mReceiver= new NotificationReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_DELETE);
+        intentFilter.addAction(Intent.ACTION_GET_CONTENT);
+        registerReceiver(mReceiver, intentFilter);
 
         setContentView(R.layout.activity_bookitem_list);
 
@@ -196,6 +207,33 @@ public class BookItemListActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(mReceiver);
+        super.onDestroy();
+    }
+
+    public class NotificationReceiver extends BroadcastReceiver {
+
+        public NotificationReceiver() {
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.w(TAG, "@@@@Receiving action:"+intent.getAction());
+            String action = intent.getAction();
+            switch (action){
+                case Intent.ACTION_DELETE:
+                    BookContent.deleteBook(-1);
+                    break;
+                case Intent.ACTION_GET_CONTENT:
+                    getBaseContext();
+                    adapter.showDetail(getBaseContext(), 2);
+//                    updateNotification();
+                    break;
+            }
+        }
+    }
 
     public static final int ITEM_TYPE_ODD = 0;
     public static final int ITEM_TYPE_EVEN = 1;
@@ -211,22 +249,24 @@ public class BookItemListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 BookItem item = (BookItem) view.getTag();
-                if (mTwoPane) {
-                    Bundle arguments = new Bundle();
-                    arguments.putLong(BookItemListActivity.ARG_ITEM_ID, item.getId());
-                    BookItemDetailFragment fragment = new BookItemDetailFragment();
-                    fragment.setArguments(arguments);
-                    mParentActivity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.bookitem_detail_container, fragment)
-                            .commit();
-                } else {
-                    Context context = view.getContext();
-                    Intent intent = new Intent(context, BookItemDetailActivity.class);
-                    intent.putExtra(BookItemListActivity.ARG_ITEM_ID, item.getId());
-                    context.startActivity(intent);
-                }
+                showDetail(view.getContext(), item.getId());
             }
         };
+        private void showDetail(Context context, long bookId) {
+            if (mTwoPane) {
+                Bundle arguments = new Bundle();
+                arguments.putLong(BookItemListActivity.ARG_ITEM_ID, bookId);
+                BookItemDetailFragment fragment = new BookItemDetailFragment();
+                fragment.setArguments(arguments);
+                mParentActivity.getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.bookitem_detail_container, fragment)
+                        .commit();
+            } else {
+                Intent intent = new Intent(context, BookItemDetailActivity.class);
+                intent.putExtra(BookItemListActivity.ARG_ITEM_ID, bookId);
+                context.startActivity(intent);
+            }
+        }
 
         SimpleItemRecyclerViewAdapter(BookItemListActivity parent,
                                       List<BookItem> items,
