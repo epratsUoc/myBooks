@@ -2,4 +2,7 @@
     <string name="app_name">MyBooks</string>
     <string name="title_bookitem_detail">BookItem Detail</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="shareApps">Share to other apps</string>
+    <string name="copyClipboard">Copy to clipboard</string>
+    <string name="shareWhatsapp">Share in WhatsApp</string>
 </resources>

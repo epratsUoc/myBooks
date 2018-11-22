@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name="cat.enricprats.mybooks.MyBooks">
+
         <!-- Meta data SugarORM -->
         <meta-data android:name="DATABASE" android:value="myBooks.db" />
         <meta-data android:name="VERSION" android:value="1" />

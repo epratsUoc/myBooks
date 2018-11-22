@@ -29,13 +29,24 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                      <entry key="image">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="trimmed" value="true" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
                                     </map>
                                   </option>
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="D:\Formacio\UOC\PLA3\book.png" />
-                                      <entry key="outputName" value="ic_book_app" />
+                                      <entry key="imageAsset" value="D:\Formacio\UOC\baseline_account_circle_black_18dp.png" />
+                                      <entry key="outputName" value="ic_account_circle" />
                                     </map>
                                   </option>
                                 </PersistentState>

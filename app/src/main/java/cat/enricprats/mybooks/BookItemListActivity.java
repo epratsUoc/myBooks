@@ -33,6 +33,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.mikepenz.materialdrawer.model.interfaces.Nameable;
+
 import java.util.List;
 
 import cat.enricprats.mybooks.model.BookItem;
@@ -58,6 +70,8 @@ public class BookItemListActivity extends AppCompatActivity {
      */
     private boolean mTwoPane;
 
+    private Drawer drawer;
+
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
 
@@ -70,6 +84,8 @@ public class BookItemListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
 
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -126,6 +142,63 @@ public class BookItemListActivity extends AppCompatActivity {
                 // ============ FIN CODIGO A COMPLETAR ===============
             }
         });
+
+
+        // Create menu
+        // Create the AccountHeader
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.drawable.mr_dialog_material_background_dark)
+                .addProfiles(
+                        new ProfileDrawerItem()
+                                .withName("Enric Prats")
+                                .withEmail("enric.prats@gmail.com")
+                                .withIcon(getResources().getDrawable(R.drawable.ic_account_circle))
+                )
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                    @Override
+                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
+                        return false;
+                    }
+                })
+
+                .build();
+
+        PrimaryDrawerItem shareApps = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.shareApps);
+        PrimaryDrawerItem copyClipboard = new PrimaryDrawerItem().withIdentifier(2).withName(R.string.copyClipboard);
+        PrimaryDrawerItem shareWhatsapp = new PrimaryDrawerItem().withIdentifier(3).withName(R.string.shareWhatsapp)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        if (drawerItem instanceof Nameable) {
+//                            Toast.makeText(this, ((Nameable) drawerItem).getName().getText(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BookItemListActivity.this, "@@@@"+((Nameable) drawerItem).getName().getText(BookItemListActivity.this), Toast.LENGTH_SHORT).show();
+                        }
+                        return false;
+                    }
+                });
+        drawer = new DrawerBuilder()
+                .withActivity(this)
+                .withAccountHeader(headerResult)
+                .withToolbar(toolbar)
+                .addDrawerItems(
+                        shareApps,
+//                        new DividerDrawerItem(),
+                        copyClipboard,
+                        shareWhatsapp
+//                        new SecondaryDrawerItem()
+                )
+// If we want a generic method which is executed for every clicked item
+//                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+//                    @Override
+//                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+//                        if (drawerItem instanceof Nameable) {
+//                            Toast.makeText(BookItemListActivity.this, ((Nameable) drawerItem).getName().getText(BookItemListActivity.this), Toast.LENGTH_SHORT).show();
+//                        }
+//                        return false;
+//                    }
+//                })
+                .build();
 
     }
 
