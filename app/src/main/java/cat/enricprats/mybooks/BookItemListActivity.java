@@ -164,7 +164,22 @@ public class BookItemListActivity extends AppCompatActivity {
 
                 .build();
 
-        PrimaryDrawerItem shareApps = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.shareApps);
+        PrimaryDrawerItem shareApps = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.shareApps)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        if (drawerItem instanceof Nameable) {
+                            Toast.makeText(BookItemListActivity.this, "@@@@"+((Nameable) drawerItem).getName().getText(BookItemListActivity.this), Toast.LENGTH_SHORT).show();
+                            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                            sharingIntent.setType("text/plain");
+                            String shareBody = "Here is the share content body";
+                            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
+                            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                            startActivity(Intent.createChooser(sharingIntent, "Share via"));
+                        }
+                        return false;
+                    }
+                });
         PrimaryDrawerItem copyClipboard = new PrimaryDrawerItem().withIdentifier(2).withName(R.string.copyClipboard);
         PrimaryDrawerItem shareWhatsapp = new PrimaryDrawerItem().withIdentifier(3).withName(R.string.shareWhatsapp)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
