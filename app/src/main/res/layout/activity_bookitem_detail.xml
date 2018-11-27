@@ -53,4 +53,8 @@
         app:layout_anchorGravity="top|end"
         app:srcCompat="@android:drawable/btn_star_big_on" />
 
+    <WebView
+        android:id="@+id/simpleWebView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 </android.support.design.widget.CoordinatorLayout>

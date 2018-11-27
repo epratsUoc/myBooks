@@ -9,6 +9,8 @@ import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 /**
  * An activity representing a single BookItem detail screen. This
@@ -18,12 +20,23 @@ import android.view.MenuItem;
  */
 public class BookItemDetailActivity extends AppCompatActivity {
 
+    private WebView webView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_bookitem_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
+
+        webView = (WebView) findViewById(R.id.simpleWebView);
+        webView.setWebViewClient(new WebViewClient());
+        webView.loadUrl("file:///android_asset/form.html");
+        webView.setVisibility(View.GONE);
+
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -31,6 +44,7 @@ public class BookItemDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                webView.setVisibility(View.VISIBLE);
             }
         });
 
