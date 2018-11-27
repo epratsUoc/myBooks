@@ -5,4 +5,6 @@
     <string name="shareApps">Share to other apps</string>
     <string name="copyClipboard">Copy to clipboard</string>
     <string name="shareWhatsapp">Share in WhatsApp</string>
+    <string name="file_provider_authority" translatable="false">cat.enricprats.mybooks.fileproviderexample.fileprovider</string>
+    <string name="copiedToClipboard" translatable="true">Text copied to clipboard</string>
 </resources>

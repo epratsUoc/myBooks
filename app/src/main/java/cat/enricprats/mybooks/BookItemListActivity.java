@@ -2,13 +2,21 @@ package cat.enricprats.mybooks;
 
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -45,6 +53,10 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.net.URI;
 import java.util.List;
 
 import cat.enricprats.mybooks.model.BookItem;
@@ -169,25 +181,72 @@ public class BookItemListActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if (drawerItem instanceof Nameable) {
-                            Toast.makeText(BookItemListActivity.this, "@@@@"+((Nameable) drawerItem).getName().getText(BookItemListActivity.this), Toast.LENGTH_SHORT).show();
                             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                            sharingIntent.setType("text/plain");
-                            String shareBody = "Here is the share content body";
-                            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
-                            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-                            startActivity(Intent.createChooser(sharingIntent, "Share via"));
+                            sharingIntent.setType("image/*");
+
+                            Bitmap bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.ic_book_app);
+                            try {
+                                File file = new File(getExternalCacheDir(),"logicchip.png");
+                                FileOutputStream fOut = new FileOutputStream(file);
+                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+                                fOut.flush();
+                                fOut.close();
+                                file.setReadable(true, false);
+
+                                Uri photoURI = FileProvider.getUriForFile(BookItemListActivity.this,
+                                        getString(R.string.file_provider_authority),
+                                        file);
+                                sharingIntent.putExtra(Intent.EXTRA_STREAM, photoURI);
+                                sharingIntent.putExtra(Intent.EXTRA_TEXT, "Aplicació Android sobre llibres");
+                                startActivity(Intent.createChooser(sharingIntent, "Share image via"));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                         return false;
                     }
                 });
-        PrimaryDrawerItem copyClipboard = new PrimaryDrawerItem().withIdentifier(2).withName(R.string.copyClipboard);
-        PrimaryDrawerItem shareWhatsapp = new PrimaryDrawerItem().withIdentifier(3).withName(R.string.shareWhatsapp)
+        PrimaryDrawerItem copyClipboard = new PrimaryDrawerItem().withIdentifier(2).withName(R.string.copyClipboard)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if (drawerItem instanceof Nameable) {
 //                            Toast.makeText(this, ((Nameable) drawerItem).getName().getText(), Toast.LENGTH_SHORT).show();
-                            Toast.makeText(BookItemListActivity.this, "@@@@"+((Nameable) drawerItem).getName().getText(BookItemListActivity.this), Toast.LENGTH_SHORT).show();
+                            ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+                            ClipData clip = ClipData.newPlainText("text", "Aplicació per compartir llibres");
+                            clipboard.setPrimaryClip(clip);
+                            Toast.makeText(BookItemListActivity.this, R.string.copiedToClipboard, Toast.LENGTH_SHORT).show();
+                        }
+                        return false;
+                    }
+                });
+        PrimaryDrawerItem shareWhatsapp = new PrimaryDrawerItem().withIdentifier(3).withName(R.string.shareWhatsapp)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        if (drawerItem instanceof Nameable) {
+                            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                            sharingIntent.setType("image/*");
+
+                            Bitmap bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.ic_book_app);
+                            try {
+                                File file = new File(getExternalCacheDir(),"logicchip.png");
+                                FileOutputStream fOut = new FileOutputStream(file);
+                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+                                fOut.flush();
+                                fOut.close();
+                                file.setReadable(true, false);
+
+                                Uri photoURI = FileProvider.getUriForFile(BookItemListActivity.this,
+                                        getString(R.string.file_provider_authority),
+                                        file);
+                                sharingIntent.putExtra(Intent.EXTRA_STREAM, photoURI);
+                                sharingIntent.putExtra(Intent.EXTRA_TEXT, "Aplicació Android sobre llibres");
+                                sharingIntent.setPackage("com.whatsapp");
+                                startActivity(sharingIntent);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                         return false;
                     }
