@@ -9,7 +9,7 @@ public class MyBooks extends SugarApp {
         super.onCreate();
         Stetho.initializeWithDefaults(this);
 
-        // Code added to force the creation of the table BookItem
+        // This code would force the creation of the table BookItem - an issue related to Instant Run. Only left as reference
 //        SugarContext.init(getApplicationContext());
 //        SchemaGenerator schemaGenerator = new SchemaGenerator(this);
 //        schemaGenerator.createDatabase(new SugarDb(this).getDB());

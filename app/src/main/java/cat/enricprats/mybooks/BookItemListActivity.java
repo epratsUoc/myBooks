@@ -176,6 +176,7 @@ public class BookItemListActivity extends AppCompatActivity {
 
                 .build();
 
+        // Creating menu items with their actions
         PrimaryDrawerItem shareApps = new PrimaryDrawerItem().withIdentifier(1).withName(R.string.shareApps)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -184,6 +185,7 @@ public class BookItemListActivity extends AppCompatActivity {
                             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                             sharingIntent.setType("image/*");
 
+                            // Get the app icon as an image file
                             Bitmap bitmap= BitmapFactory.decodeResource(getResources(),R.drawable.ic_book_app);
                             try {
                                 File file = new File(getExternalCacheDir(),"logicchip.png");
@@ -211,7 +213,6 @@ public class BookItemListActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if (drawerItem instanceof Nameable) {
-//                            Toast.makeText(this, ((Nameable) drawerItem).getName().getText(), Toast.LENGTH_SHORT).show();
                             ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
                             ClipData clip = ClipData.newPlainText("text", "Aplicació per compartir llibres");
                             clipboard.setPrimaryClip(clip);
@@ -257,10 +258,8 @@ public class BookItemListActivity extends AppCompatActivity {
                 .withToolbar(toolbar)
                 .addDrawerItems(
                         shareApps,
-//                        new DividerDrawerItem(),
                         copyClipboard,
                         shareWhatsapp
-//                        new SecondaryDrawerItem()
                 )
 // If we want a generic method which is executed for every clicked item
 //                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
@@ -440,7 +439,6 @@ public class BookItemListActivity extends AppCompatActivity {
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(viewType == ITEM_TYPE_ODD ? R.layout.bookitem_list_content_odd : R.layout.bookitem_list_content_even, parent, false);
-//                    .inflate(R.layout.bookitem_list_content_odd, parent, false);
             return new ViewHolder(view);
         }
 

@@ -36,7 +36,6 @@ public class BookItemDetailActivity extends AppCompatActivity {
         {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-//                view.loadUrl(String.valueOf(request.getUrl()));
                 String name = request.getUrl().getQueryParameter("name");
                 String num = request.getUrl().getQueryParameter("num");
                 String date = request.getUrl().getQueryParameter("date");
@@ -92,8 +91,6 @@ public class BookItemDetailActivity extends AppCompatActivity {
 
             arguments.putLong(BookItemListActivity.ARG_ITEM_ID,
                     getIntent().getLongExtra(BookItemListActivity.ARG_ITEM_ID, 0));
-//                    getIntent().getStringExtra(BookItemListActivity.ARG_ITEM_ID));
-//                getIntent().getIntExtra(BookItemListActivity.ARG_ITEM_ID, -1));
             BookItemDetailFragment fragment = new BookItemDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
