@@ -9,6 +9,9 @@ import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 /**
  * An activity representing a single BookItem detail screen. This
@@ -18,19 +21,52 @@ import android.view.MenuItem;
  */
 public class BookItemDetailActivity extends AppCompatActivity {
 
+    private WebView webView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_bookitem_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        webView = (WebView) findViewById(R.id.simpleWebView);
+        webView.setWebViewClient(new WebViewClient()
+        {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+//                view.loadUrl(String.valueOf(request.getUrl()));
+                String name = request.getUrl().getQueryParameter("name");
+                String num = request.getUrl().getQueryParameter("num");
+                String date = request.getUrl().getQueryParameter("date");
+                if ("".equals(name) || "".equals(num) || "".equals(date)) {
+                    Snackbar mySnackbar = Snackbar.make(view, "You must fill all fields", Snackbar.LENGTH_LONG);
+                    mySnackbar.show();
+                }
+                else {
+                    Snackbar mySnackbar = Snackbar.make(view, "Payment done", Snackbar.LENGTH_LONG);
+//                        .setAction("Action", null).show();
+                    mySnackbar.show();
+                    webView.setVisibility(View.GONE);
+                    final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.buy);
+                    fab.show();
+                }
+                return true;
+            }
+        });
+        webView.loadUrl("file:///android_asset/form.html");
+        webView.setVisibility(View.GONE);
+
+
+
+        // Floating button to buy the book
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.buy);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                webView.setVisibility(View.VISIBLE);
+                fab.hide();
             }
         });
 
